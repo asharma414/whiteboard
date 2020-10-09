@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import io from 'socket.io-client';
 import './styles/board.css';
 
 
@@ -15,12 +14,11 @@ const Board = () => {
     const canvas = canvasRef.current;
     const test = colorsRef.current;
     const context = canvas.getContext('2d');
+    let dataURL = '';
 
     // ----------------------- Colors --------------------------------------------------
 
     const colors = document.getElementsByClassName('color');
-    console.log(colors, 'the colors');
-    console.log(test);
     // set the current color
     const current = {
       color: 'black',
@@ -40,7 +38,6 @@ const Board = () => {
     // ------------------------------- create the drawline ----------------------------
 
     const drawLine = (x0, y0, x1, y1, color, send) => {
-        console.log(send)
       context.beginPath();
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
@@ -48,6 +45,8 @@ const Board = () => {
       context.lineWidth = 2;
       context.stroke();
       context.closePath();
+      context.save();
+      dataURL = canvasRef.current.toDataURL('image/png');
 
       if (!send) { return; }
       const w = canvas.width;
@@ -115,6 +114,10 @@ const Board = () => {
     const onResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      let img = document.createElement('img');
+      img.src = dataURL;
+      context.drawImage(img, 0,0);
+      context.restore();
     };
 
     window.addEventListener('resize', onResize, false);
