@@ -15,7 +15,6 @@ const Board = () => {
     let dataURL = '';
 
     const colors = document.getElementsByClassName('color');
-    // set the current color
     const current = {
       color: 'black',
     };
@@ -74,7 +73,6 @@ const Board = () => {
       drawLine(current.x, current.y, e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, current.color, true);
     };
 
-    // ----------- limit the number of events per second -----------------------
 
     const throttle = (callback, delay) => {
       let previousCall = new Date().getTime();
@@ -88,7 +86,6 @@ const Board = () => {
       };
     };
 
-    // -----------------add event listeners to our canvas ----------------------
 
     canvas.addEventListener('mousedown', onMouseDown, false);
     canvas.addEventListener('mouseup', onMouseUp, false);
@@ -118,7 +115,7 @@ const Board = () => {
       drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
     }
 
-    socketRef.current = new WebSocket('ws://localhost:8000/')
+    socketRef.current = new WebSocket('ws://'+ window.location.host)
     socketRef.current.onopen = e => {
         console.log('open', e)
     }
