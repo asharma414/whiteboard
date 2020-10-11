@@ -9,14 +9,10 @@ const Board = () => {
 
   useEffect(() => {
 
-    // --------------- getContext() method returns a drawing context on the canvas-----
-
     const canvas = canvasRef.current;
     const test = colorsRef.current;
     const context = canvas.getContext('2d');
     let dataURL = '';
-
-    // ----------------------- Colors --------------------------------------------------
 
     const colors = document.getElementsByClassName('color');
     // set the current color
@@ -24,18 +20,15 @@ const Board = () => {
       color: 'black',
     };
 
-    // helper that will update the current color
     const onColorUpdate = (e) => {
       current.color = e.target.className.split(' ')[1];
     };
 
-    // loop through the color elements and add the click event listeners
     for (let i = 0; i < colors.length; i++) {
       colors[i].addEventListener('click', onColorUpdate, false);
     }
     let drawing = false;
 
-    // ------------------------------- create the drawline ----------------------------
 
     const drawLine = (x0, y0, x1, y1, color, send) => {
       context.beginPath();
@@ -61,7 +54,6 @@ const Board = () => {
       }));
     };
 
-    // ---------------- mouse movement --------------------------------------
 
     const onMouseDown = (e) => {
       drawing = true;
@@ -103,13 +95,10 @@ const Board = () => {
     canvas.addEventListener('mouseout', onMouseUp, false);
     canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false);
 
-    // Touch support for mobile devices
     canvas.addEventListener('touchstart', onMouseDown, false);
     canvas.addEventListener('touchend', onMouseUp, false);
     canvas.addEventListener('touchcancel', onMouseUp, false);
     canvas.addEventListener('touchmove', throttle(onMouseMove, 10), false);
-
-    // -------------- make the canvas fill its parent component -----------------
 
     const onResize = () => {
       canvas.width = window.innerWidth;
@@ -123,7 +112,6 @@ const Board = () => {
     window.addEventListener('resize', onResize, false);
     onResize();
 
-    // ----------------------- socket.io connection ----------------------------
     const onDrawingEvent = (data) => {
       const w = canvas.width;
       const h = canvas.height;
@@ -141,10 +129,8 @@ const Board = () => {
     socketRef.current.onerror = e => {
         console.log('error', e)
     }
-    // socketRef.current.onmessage('drawing', onDrawingEvent);
   }, []);
 
-  // ------------- The Canvas and color elements --------------------------
 
   return (
     <div>
